@@ -3,8 +3,8 @@ import GameOptionsComp from './components/GameOptionsComp';
 import TowerComp from './components/TowerComp';
 import WinMessageComp from './components/WinMessageComp';
 import Tower from './utils/Tower';
-import './App.css';
 import deepCopy from './helpers/deepCopy';
+import './App.css';
 
 const App = () => {
   //Contar el numero de movimientos
@@ -13,6 +13,7 @@ const App = () => {
   const [dragTile, setDragTile] = useState();
   //Los discos para la torre principal
   const [disks, setDisks] = useState(3);
+  const [size, setSize] = useState(disks);
 
   //Los discos de cada torre (1, 2, 3)
   const [tiles, setTiles] = useState([]);
@@ -64,13 +65,17 @@ const App = () => {
         setTowerOne(deepCopy(towerOne));
       }
     }
+    setSize(disks);
+    setMoveCount(0);
+    setTowerTwo(new Tower());
+    setTowerThree(new Tower());
   };
 
   const handleDrag = (e, tile, id) => {
     //Funcion que se lanza cada vez que movemos un disco que se encuentra en la parte superior de una torre
-    console.log('drag');
     const dragTile = { tile, towerId: id };
-    if (towers[id].tower.disks.top === dragTile.tile) {
+
+    if (towers[id].tower.disks.top.id === dragTile.tile.id) {
       setDragTile(dragTile);
     } else {
       e.preventDefault();
@@ -78,7 +83,6 @@ const App = () => {
   };
 
   const handleDrop = (e) => {
-    console.log('drop');
     //Funcion que se lanza cada vez que un disco se deja en una nueva torre
     const dropColumn = e.currentTarget.id; //ID de la columna de destino
     let source = towers[dragTile.towerId].tower; //Torre de origen
@@ -88,18 +92,39 @@ const App = () => {
     if (goodMove) {
       //Si es un movimiento valido -> incrementar los movimientos
       setMoveCount((prevState) => prevState + 1); //Actualizar los movimientos
+
+      setTowerOne(deepCopy(towerOne));
+
+      setTowerTwo(deepCopy(towerTwo));
+
+      setTowerThree(deepCopy(towerThree));
     }
   };
 
   const solve = () => {
-    //COMPLETAR
+    towerOne.moveDisks(disks, towerOne, towerThree, towerTwo, 0);
+
+    setTowerOne(deepCopy(towerOne));
+
+    setTowerTwo(deepCopy(towerTwo));
+
+    setTowerThree(deepCopy(towerThree));
   };
 
-  const winCondition = false; //COMPLETAR
+  const winCondition =
+    size === towerTwo.disks.size || size === towerThree.disks.size
+      ? true
+      : false; //COMPLETAR
+
   return (
     <>
       <div className="container">
-        <GameOptionsComp disks={disks} reset={reset} setDisks={setDisks} />
+        <GameOptionsComp
+          disks={disks}
+          reset={reset}
+          setDisks={setDisks}
+          solve={solve}
+        />
         <div className="content">
           <TowerComp
             id={1}

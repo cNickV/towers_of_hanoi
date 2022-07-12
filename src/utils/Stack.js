@@ -44,6 +44,14 @@ class Stack {
     }
   }
 
+  isFull() {
+    return this.size === this.maxSize;
+  }
+
+  isEmpty() {
+    return this.size === 0;
+  }
+
   traverse() {
     let list = [];
     let currentNode = this.top;
