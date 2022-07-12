@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import GameOptionsComp from './components/GameOptionsComp';
-import TowerComp from './components/TowerComp';
-import WinMessageComp from './components/WinMessageComp';
-import Tower from './utils/Tower';
-import deepCopy from './helpers/deepCopy';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import GameOptionsComp from "./components/GameOptionsComp";
+import TowerComp from "./components/TowerComp";
+import WinMessageComp from "./components/WinMessageComp";
+import Tower from "./utils/Tower";
+import deepCopy from "./helpers/deepCopy";
+import "./App.css";
 
 const App = () => {
   //Contar el numero de movimientos
